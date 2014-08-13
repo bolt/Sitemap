@@ -1,0 +1,33 @@
+{
+    "name": "bolt/Sitemap",
+    "description": "",
+    "type": "bolt-extension",
+    "keywords": [],
+    "require": {
+        "bolt/bolt": ">1.0,<2.0.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bob den Otter",
+            "email": "bob@twokings.nl"
+        },
+        {
+            "name": "Patrick van Kouteren",
+            "email": "pvankouteren"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "init.php"
+        ],
+        "psr-4": {
+            "Sitemap\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.7.*"
+        }
+    }
+}

@@ -36,6 +36,11 @@ class Extension extends \Bolt\BaseExtension
 
     }
 
+    public function getName()
+    {
+        return "Sitemap";
+    }
+
     /**
      * Initialize Sitemap. Called during bootstrap phase.
      */

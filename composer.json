@@ -1,5 +1,5 @@
 {
-    "name": "bolt/Sitemap",
+    "name": "bolt/sitemap",
     "description": "",
     "type": "bolt-extension",
     "keywords": [],
@@ -23,11 +23,6 @@
         ],
         "psr-4": {
             "Sitemap\\": ""
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.7.*"
         }
     }
 }

@@ -26,7 +26,7 @@ class Extension extends \Bolt\BaseExtension
         $this->app->match("/sitemap", array($this, 'sitemap'));
         $this->app->match("/sitemap.xml", array($this, 'sitemapXml'));
 
-        $this->insertSnippet(SnippetLocation::END_OF_HEAD, 'headsnippet');
+        $this->addSnippet(SnippetLocation::END_OF_HEAD, 'headsnippet');
 
     }
 

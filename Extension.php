@@ -3,7 +3,6 @@
 
 namespace Bolt\Extension\Bolt\Sitemap;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Bolt\Extensions\Snippets\Location as SnippetLocation;
 
@@ -17,7 +16,7 @@ class Extension extends \Bolt\BaseExtension
     /**
      * Initialize Sitemap. Called during bootstrap phase.
      */
-    function initialize()
+    public function initialize()
     {
         if (empty($this->config['ignore_contenttype'])) {
             $this->config['ignore_contenttype'] = array();
@@ -33,15 +32,15 @@ class Extension extends \Bolt\BaseExtension
 
     public function sitemap($xml = false)
     {
-        if($xml){
+        if ($xml) {
             $this->app['extensions']->clearSnippetQueue();
             $this->app['extensions']->disableJquery();
             $this->app['debugbar'] = false;
         }
 
         $links = array(array('link' => $this->app['paths']['root'], 'title' => $this->app['config']->get('general/sitename')));
-        foreach( $this->app['config']->get('contenttypes') as $contenttype ) {
-            if(!in_array($contenttype['slug'], $this->config['ignore_contenttype'])) {
+        foreach ( $this->app['config']->get('contenttypes') as $contenttype ) {
+            if (!in_array($contenttype['slug'], $this->config['ignore_contenttype'])) {
                 if (isset($contenttype['listing_template'])) {
                     $links[] = array( 'link' => $this->app['paths']['root'].$contenttype['slug'], 'title' => $contenttype['name'] );
                 }
@@ -49,15 +48,15 @@ class Extension extends \Bolt\BaseExtension
                     $contenttype['slug'],
                     array('limit' => 10000, 'order' => 'datepublish desc')
                 );
-                foreach( $content as $entry ) {
+                foreach ($content as $entry) {
                     $links[] = array('link' => $entry->link(), 'title' => $entry->getTitle(),
                         'lastmod' => date( \DateTime::W3C, strtotime($entry->get('datechanged'))));
                 }
             }
         }
 
-        foreach($links as $idx => $link) {
-            if(in_array($link['link'], $this->config['ignore'])) {
+        foreach ($links as $idx => $link) {
+            if (in_array($link['link'], $this->config['ignore'])) {
                 unset($links[$idx]);
             }
         }
@@ -100,6 +99,4 @@ class Extension extends \Bolt\BaseExtension
 
     }
 
-
 }
-

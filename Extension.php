@@ -9,33 +9,6 @@ use Bolt\Extensions\Snippets\Location as SnippetLocation;
 
 class Extension extends \Bolt\BaseExtension
 {
-
-
-    /**
-     * Info block for Sitemap Extension.
-     */
-    function info()
-    {
-
-        $data = array(
-            'name' => "Sitemap",
-            'description' => "An extension to create XML sitemaps for your Bolt website.",
-            'author' => "Bob den Otter / Patrick van Kouteren",
-            'link' => "http://bolt.cm",
-            'version' => "0.1",
-            'required_bolt_version' => "1.1.4",
-            'highest_bolt_version' => "1.1.4",
-            'type' => "General",
-            'first_releasedate' => "2013-07-19",
-            'latest_releasedate' => "2013-07-19",
-            'dependencies' => "",
-            'priority' => 10
-        );
-
-        return $data;
-
-    }
-
     public function getName()
     {
         return "Sitemap";

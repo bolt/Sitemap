@@ -22,7 +22,7 @@
             "init.php"
         ],
         "psr-4": {
-            "Sitemap\\": ""
+            "Bolt\\Extension\\Bolt\\Sitemap\\": ""
         }
     }
 }

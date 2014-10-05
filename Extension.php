@@ -1,7 +1,7 @@
 <?php
 // Sitemap Extension for Bolt, by Bob den Otter
 
-namespace Sitemap;
+namespace Bolt\Extension\Bolt\Sitemap;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,6 +1,6 @@
 {
     "name": "bolt/sitemap",
-    "description": "",
+    "description": "An extension to create XML sitemaps for your Bolt website.",
     "type": "bolt-extension",
     "keywords": [],
     "require": {

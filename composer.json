@@ -2,7 +2,10 @@
     "name": "bolt/sitemap",
     "description": "An extension to create XML sitemaps for your Bolt website.",
     "type": "bolt-extension",
-    "keywords": [],
+    "keywords": [
+        "sitemap",
+        "SEO"
+    ],
     "require": {
         "bolt/bolt": ">=2.0.0,<3.0.0"
     },

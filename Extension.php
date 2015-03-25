@@ -6,6 +6,10 @@ namespace Bolt\Extension\Bolt\Sitemap;
 use Symfony\Component\HttpFoundation\Response;
 use Bolt\Extensions\Snippets\Location as SnippetLocation;
 
+# If we have a boatload of content, we might need a bit more memory. 
+set_time_limit(0);
+ini_set('memory_limit', '512M');
+
 class Extension extends \Bolt\BaseExtension
 {
     public function getName()

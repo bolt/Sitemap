@@ -48,7 +48,7 @@ class Extension extends \Bolt\BaseExtension
                 }
                 $content = $this->app['storage']->getContent(
                     $contenttype['slug'],
-                    array('limit' => 10000, 'order' => 'datepublish desc')
+                    array('limit' => 10000, 'order' => 'datepublish desc', 'hydrate' => false)
                 );
                 foreach ($content as $entry) {
                     $links[] = array('link' => $entry->link(), 'title' => $entry->getTitle(), 'depth' => $baseDepth + 1,

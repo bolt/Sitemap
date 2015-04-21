@@ -26,6 +26,10 @@ class Extension extends \Bolt\BaseExtension
             $this->config['ignore_contenttype'] = array();
         }
 
+        if (empty($this->config['ignore'])) {
+            $this->config['ignore'] = array();
+        }
+
         // Set up the routes for the sitemap..
         $this->app->match("/sitemap", array($this, 'sitemap'));
         $this->app->match("/sitemap.xml", array($this, 'sitemapXml'));

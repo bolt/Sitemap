@@ -48,7 +48,7 @@ class Extension extends \Bolt\BaseExtension
 
         $links = array(array('link' => $this->app['paths']['root'], 'title' => $this->app['config']->get('general/sitename')));
         foreach ( $this->app['config']->get('contenttypes') as $contenttype ) {
-            if (!in_array($contenttype['slug'], $this->config['ignore_contenttype'])) {
+            if (!in_array($contenttype['slug'], $this->config['ignore_contenttype']) && !$contenttype['viewless']) {
                 $baseDepth = 0;
                 if (isset($contenttype['listing_template'])) {
                     $baseDepth = 1;

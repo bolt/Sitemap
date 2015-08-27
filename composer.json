@@ -27,5 +27,8 @@
         "psr-4": {
             "Bolt\\Extension\\Bolt\\Sitemap\\": ""
         }
+    },
+    "extra" : {
+        "bolt-icon": "assets/icon-sitemap.png"
     }
 }

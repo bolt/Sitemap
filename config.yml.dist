@@ -11,3 +11,6 @@ ignore:
 ## ignore by "slug" of contenttype
 #ignore_contenttype:
 #  - pages
+
+## ignore listing templates
+#ignore_listing: true

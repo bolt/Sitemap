@@ -6,7 +6,7 @@ namespace Bolt\Extension\Bolt\Sitemap;
 use Symfony\Component\HttpFoundation\Response;
 use Bolt\Extensions\Snippets\Location as SnippetLocation;
 
-# If we have a boatload of content, we might need a bit more memory. 
+# If we have a boatload of content, we might need a bit more memory.
 set_time_limit(0);
 ini_set('memory_limit', '512M');
 
@@ -30,6 +30,10 @@ class Extension extends \Bolt\BaseExtension
             $this->config['ignore'] = array();
         }
 
+        if (empty($this->config['ignore_listing'])) {
+            $this->config['ignore_listing'] = false;
+        }
+
         // Set up the routes for the sitemap..
         $this->app->match("/sitemap", array($this, 'sitemap'));
         $this->app->match("/sitemap.xml", array($this, 'sitemapXml'));
@@ -50,7 +54,7 @@ class Extension extends \Bolt\BaseExtension
         foreach ( $this->app['config']->get('contenttypes') as $contenttype ) {
             if (!in_array($contenttype['slug'], $this->config['ignore_contenttype']) && !$contenttype['viewless']) {
                 $baseDepth = 0;
-                if (isset($contenttype['listing_template'])) {
+                if (isset($contenttype['listing_template']) && !$this->config['ignore_listing']) {
                     $baseDepth = 1;
                     $links[] = array( 'link' => $this->app['paths']['root'].$contenttype['slug'], 'title' => $contenttype['name'], 'depth' => 1 );
                 }

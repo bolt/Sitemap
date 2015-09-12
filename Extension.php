@@ -70,7 +70,7 @@ class Extension extends \Bolt\BaseExtension
         }
 
         foreach ($links as $idx => $link) {
-            if (in_array($link['link'], $this->config['ignore'])) {
+            if ($this->linkIsIgnored($link)) {
                 unset($links[$idx]);
             }
         }
@@ -94,6 +94,28 @@ class Extension extends \Bolt\BaseExtension
 
         return new Response($body, 200, $headers);
 
+    }
+
+    public function linkIsIgnored($link)
+    {
+        if (in_array($link['link'], $this->config['ignore'])) {
+            // Perfect match
+            return true;
+        }
+
+        // use ignore as a regex
+        foreach ($this->config['ignore'] as $ignore) {
+            $pattern = str_replace('/', '\/', $ignore);
+
+            // Match on whole string so a $ignore of "/entry/" isn't the same as
+            // "/entry/.*"
+            if (preg_match("/^{$pattern}$/", $link['link'])){
+                return true;
+            }
+        }
+
+        // no absolute match + no regex match
+        return false;
     }
 
     public function sitemapXml()

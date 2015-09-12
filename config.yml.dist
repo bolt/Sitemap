@@ -7,6 +7,7 @@ ignore:
   - /page/home
   - /page/error404
   - /page/private
+  - /news/.*
 
 ## ignore by "slug" of contenttype
 #ignore_contenttype:

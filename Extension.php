@@ -3,8 +3,8 @@
 
 namespace Bolt\Extension\Bolt\Sitemap;
 
-use Symfony\Component\HttpFoundation\Response;
 use Bolt\Extensions\Snippets\Location as SnippetLocation;
+use Symfony\Component\HttpFoundation\Response;
 
 # If we have a boatload of content, we might need a bit more memory.
 set_time_limit(0);
@@ -14,7 +14,7 @@ class Extension extends \Bolt\BaseExtension
 {
     public function getName()
     {
-        return "Sitemap";
+        return 'Sitemap';
     }
 
     /**
@@ -35,11 +35,10 @@ class Extension extends \Bolt\BaseExtension
         }
 
         // Set up the routes for the sitemap..
-        $this->app->match("/sitemap", array($this, 'sitemap'));
-        $this->app->match("/sitemap.xml", array($this, 'sitemapXml'));
+        $this->app->match('/sitemap', array($this, 'sitemap'));
+        $this->app->match('/sitemap.xml', array($this, 'sitemapXml'));
 
         $this->addSnippet(SnippetLocation::END_OF_HEAD, 'headsnippet');
-
     }
 
     public function sitemap($xml = false)
@@ -51,14 +50,14 @@ class Extension extends \Bolt\BaseExtension
         }
 
         $links = array(array('link' => $this->app['paths']['root'], 'title' => $this->app['config']->get('general/sitename')));
-        foreach ( $this->app['config']->get('contenttypes') as $contenttype ) {
+        foreach ($this->app['config']->get('contenttypes') as $contenttype) {
             if (!in_array($contenttype['slug'], $this->config['ignore_contenttype']) && !$contenttype['viewless'] &&
                 ((isset($contenttype['searchable']) && $contenttype['searchable']) ||  !isset($contenttype['searchable']))
                ) {
                 $baseDepth = 0;
                 if (isset($contenttype['listing_template']) && !$this->config['ignore_listing']) {
                     $baseDepth = 1;
-                    $links[] = array( 'link' => $this->app['paths']['root'].$contenttype['slug'], 'title' => $contenttype['name'], 'depth' => 1 );
+                    $links[] = array('link' => $this->app['paths']['root'] . $contenttype['slug'], 'title' => $contenttype['name'], 'depth' => 1);
                 }
                 $content = $this->app['storage']->getContent(
                     $contenttype['slug'],
@@ -66,7 +65,7 @@ class Extension extends \Bolt\BaseExtension
                 );
                 foreach ($content as $entry) {
                     $links[] = array('link' => $entry->link(), 'title' => $entry->getTitle(), 'depth' => $baseDepth + 1,
-                        'lastmod' => date( \DateTime::W3C, strtotime($entry->get('datechanged'))), 'record' => $entry);
+                        'lastmod'           => date(\DateTime::W3C, strtotime($entry->get('datechanged'))), 'record' => $entry, );
                 }
             }
         }
@@ -86,7 +85,7 @@ class Extension extends \Bolt\BaseExtension
         $this->app['twig.loader.filesystem']->addPath(__DIR__);
 
         $body = $this->app['render']->render($template, array(
-            'entries' => $links
+            'entries' => $links,
         ));
 
         $headers = array();
@@ -95,7 +94,6 @@ class Extension extends \Bolt\BaseExtension
         }
 
         return new Response($body, 200, $headers);
-
     }
 
     public function linkIsIgnored($link)
@@ -111,7 +109,7 @@ class Extension extends \Bolt\BaseExtension
 
             // Match on whole string so a $ignore of "/entry/" isn't the same as
             // "/entry/.*"
-            if (preg_match("/^{$pattern}$/", $link['link'])){
+            if (preg_match("/^{$pattern}$/", $link['link'])) {
                 return true;
             }
         }
@@ -127,14 +125,11 @@ class Extension extends \Bolt\BaseExtension
 
     public function headsnippet()
     {
-
         $snippet = sprintf(
             '<link rel="sitemap" type="application/xml" title="Sitemap" href="%ssitemap.xml">',
             $this->app['paths']['rooturl']
         );
 
         return $snippet;
-
     }
-
 }

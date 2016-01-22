@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 set_time_limit(0);
 ini_set('memory_limit', '512M');
 
-class Extension extends \Bolt\BaseExtension
+class SitemapExtension extends \Bolt\BaseExtension
 {
     public function getName()
     {

@@ -1,7 +1,7 @@
 # sitemap settings
 
-template: assets/sitemap.twig
-xml_template: assets/sitemap_xml.twig
+template: sitemap.twig
+xml_template: sitemap_xml.twig
 
 ignore:
   - /page/home

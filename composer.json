@@ -7,7 +7,7 @@
         "SEO"
     ],
     "require": {
-        "bolt/bolt": ">=2.0.0,<3.0.0"
+        "bolt/bolt": "^3.0"
     },
     "license": "MIT",
     "authors": [
@@ -18,17 +18,19 @@
         {
             "name": "Patrick van Kouteren",
             "email": "info@wedesignit.nl"
+        },
+        {
+            "name": "Gawain Lynch",
+            "email": "gawain.lynch@gmail.com"
         }
     ],
     "autoload": {
-        "files": [
-            "init.php"
-        ],
         "psr-4": {
             "Bolt\\Extension\\Bolt\\Sitemap\\": ""
         }
     },
-    "extra" : {
-        "bolt-icon": "assets/icon-sitemap.png"
+    "extra": {
+        "bolt-icon": "icon-sitemap.png",
+        "bolt-class": "Bolt\\Extension\\Bolt\\Sitemap\\SitemapExtension"
     }
 }

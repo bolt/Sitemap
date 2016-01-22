@@ -52,7 +52,9 @@ class Extension extends \Bolt\BaseExtension
 
         $links = array(array('link' => $this->app['paths']['root'], 'title' => $this->app['config']->get('general/sitename')));
         foreach ( $this->app['config']->get('contenttypes') as $contenttype ) {
-            if (!in_array($contenttype['slug'], $this->config['ignore_contenttype']) && !$contenttype['viewless']) {
+            if (!in_array($contenttype['slug'], $this->config['ignore_contenttype']) && !$contenttype['viewless'] &&
+                ((isset($contenttype['searchable']) && $contenttype['searchable']) ||  !isset($contenttype['searchable']))
+               ) {
                 $baseDepth = 0;
                 if (isset($contenttype['listing_template']) && !$this->config['ignore_listing']) {
                     $baseDepth = 1;
@@ -64,7 +66,7 @@ class Extension extends \Bolt\BaseExtension
                 );
                 foreach ($content as $entry) {
                     $links[] = array('link' => $entry->link(), 'title' => $entry->getTitle(), 'depth' => $baseDepth + 1,
-                        'lastmod' => date( \DateTime::W3C, strtotime($entry->get('datechanged'))));
+                        'lastmod' => date( \DateTime::W3C, strtotime($entry->get('datechanged'))), 'record' => $entry);
                 }
             }
         }

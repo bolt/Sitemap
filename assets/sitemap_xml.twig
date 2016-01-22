@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     {% for entry in entries %}
         {% if entry.link is defined %}
             <url>
                 <loc>{{ app.paths.hosturl }}{{ entry.link }}</loc>
-                {% if entry.lastmod is defined %}
-                    <lastmod>{{ entry.lastmod }}</lastmod>
+                {% if entry.link == "/" %}
+                    {% setcontent record = app.config.get('general/homepage') returnsingle %}
+                {% else %}
+                    {% set record = entry.record %}
                 {% endif %}
+                {% if record.datechanged is defined %}
+                    <lastmod>{{ record.datechanged|date('Y-m-d\\TH:i:sP') }}</lastmod>
+                {% endif %}
+                <changefreq>weekly</changefreq>
+                {% if entry.link == "/" %}
+                    <priority>1</priority>
+                {% else %}
+                    <priority>0.8</priority>
+                {% endif %}
+                {% for key,value in record.values %}
+                    {% if record.fieldtype(key) == "image" and value != "" %}
+                        <image:image>
+                            <image:loc>{{app.paths.hosturl}}{{value|image(app.config.get('general/thumbnails/default_image')|first,app.config.get('general/thumbnails/default_image')|last,app.config.get('general/thumbnails/default_image')|slice(0,1))}}</image:loc>
+                            <image:title><![CDATA[{{value.alt ? value.alt : value.title}}]]></image:title>
+                            <image:caption><![CDATA[{{value.title ? value.title : value.alt}}]]></image:caption>
+                        </image:image>
+                    {% elseif record.fieldtype(key) == "imagelist" and attribute(record, key) is not empty %}
+                        {% set list = attribute(record, key) %}
+                        {% for item in list %}
+                            <image:image>
+                                <image:loc>{{app.paths.hosturl}}{{item.filename|image(app.config.get('general/thumbnails/default_image')|first,app.config.get('general/thumbnails/default_image')|last,app.config.get('general/thumbnails/default_image')|slice(0,1))}}</image:loc>
+                                {% if item.title %}
+                                <image:title><![CDATA[{{item.title}}]]></image:title>
+                                <image:caption><![CDATA[{{item.title}}]]></image:caption>
+                                {% endif %}
+                            </image:image>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
             </url>
         {% endif %}
     {% endfor %}

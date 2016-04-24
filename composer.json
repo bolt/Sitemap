@@ -26,7 +26,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Bolt\\Extension\\Bolt\\Sitemap\\": ""
+            "Bolt\\Extension\\Bolt\\Sitemap\\": "src"
         }
     },
     "extra": {

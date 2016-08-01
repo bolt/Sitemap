@@ -30,3 +30,5 @@ sitemap:
   path: /sitemap
   defaults: { _controller: 'Bolt\Extension\Bolt\Sitemap\Extension::sitemap' }
 ```
+
+Note, if you have a ContentType with the property `searchable: false`, that content type will be ignored.

@@ -132,7 +132,7 @@ class SitemapExtension extends SimpleExtension
 
             if (!$isIgnored && !$contentType['viewless'] && $searchable) {
                 $baseDepth = 0;
-                if (isset($contentType['listing_template']) && !$config['ignore_listing']) {
+                if (!$config['ignore_listing']) {
                     $baseDepth = 1;
                     $links[] = [
                         'link'  => $rootPath . $contentType['slug'],

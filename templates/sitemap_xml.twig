@@ -6,7 +6,7 @@
                 <loc>{{ app.paths.hosturl }}{{ entry.link }}</loc>
                 {% if entry.link == "/" %}
                     {% setcontent record = app.config.get('general/homepage') returnsingle %}
-                {% else %}
+                {% elseif entry.record is defined %}
                     {% set record = entry.record %}
                 {% endif %}
                 {% if record.datechanged is defined %}

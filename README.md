@@ -17,6 +17,8 @@ and to the `<head>` section of your pages:
 
 Obviously, you should replace 'example.org' with the domain name of your website.
 
+This extension adds a 'route' for `/sitemap.xml` and `/sitemap` by default, but it 
+has lower priority than user defined routes. 
 If you use the `pagebinding` in `routing.yml` (or anything similar like `/{slug}` ),
 you need to add the following _above_ that route:
 
@@ -31,4 +33,5 @@ sitemap:
   defaults: { _controller: 'Bolt\Extension\Bolt\Sitemap\Extension::sitemap' }
 ```
 
-Note, if you have a ContentType with the property `searchable: false`, that content type will be ignored.
+Note, if you have a ContentType with the property `searchable: false`, that content 
+type will be ignored.

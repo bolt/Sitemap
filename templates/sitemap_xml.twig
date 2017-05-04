@@ -18,7 +18,7 @@
                 {% else %}
                     <priority>0.8</priority>
                 {% endif %}
-                {% for key,value in record.values %}
+                {% for key,value in record.values|default %}
                     {% if record.fieldtype(key) == "image" and value != "" %}
                         <image:image>
                             <image:loc>{{ app.paths.hosturl }}{{ value|image(app.config.get('general/thumbnails/default_image')|first, app.config.get('general/thumbnails/default_image')|last) }}</image:loc>

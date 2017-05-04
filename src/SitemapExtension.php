@@ -10,6 +10,7 @@ use Bolt\Legacy\Content;
 use Carbon\Carbon;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Sitemap extension for Bolt.
@@ -49,21 +50,6 @@ class SitemapExtension extends SimpleExtension
     }
 
     /**
-     * Callback to generate the <link> inserted in the <head> section.
-     *
-     * @return string
-     */
-    public function snippetCallback()
-    {
-        $app = $this->getContainer();
-        $snippet = sprintf(
-            '<link rel="sitemap" type="application/xml" title="Sitemap" href="%ssitemap.xml">',
-            $app['resources']->getUrl('root')
-        );
-
-        return $snippet;
-    }
-    /**
      * {@inheritdoc}
      */
     protected function registerAssets()
@@ -72,7 +58,15 @@ class SitemapExtension extends SimpleExtension
         $snippet
             ->setLocation(Target::END_OF_HEAD)
             ->setZone(Zone::FRONTEND)
-            ->setCallback([$this, 'snippetCallback'])
+            ->setCallback(function () {
+                $app = $this->getContainer();
+                $snippet = sprintf(
+                    '<link rel="sitemap" type="application/xml" title="Sitemap" href="%ssitemap.xml">',
+                    $app['url_generator']->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)
+                );
+
+                return $snippet;
+            })
         ;
 
         return [
@@ -118,7 +112,7 @@ class SitemapExtension extends SimpleExtension
         $config = $this->getConfig();
         $contentTypes = $app['config']->get('contenttypes');
         $contentParams = ['limit' => 10000, 'order' => 'datepublish desc', 'hydrate' => false];
-        $rootPath = $app['resources']->getUrl('root');
+        $rootPath = $app['url_generator']->generate('homepage');
 
         $links = [
             [
@@ -166,7 +160,7 @@ class SitemapExtension extends SimpleExtension
     /**
      * Check to see if a link should be ignored from teh sitemap.
      *
-     * @param string $link
+     * @param array $link
      *
      * @return bool
      */

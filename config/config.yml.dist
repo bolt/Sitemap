@@ -15,3 +15,8 @@ ignore:
 
 ## ignore listing templates
 #ignore_listing: true
+
+## when ignore_listing is not = true: listings templates may not exist yet may contain child pages.
+## add path will keep listing visible in tree but remove its link.
+#remove_link:
+#  - /pages

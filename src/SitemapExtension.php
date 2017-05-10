@@ -34,6 +34,17 @@ class SitemapExtension extends SimpleExtension
     }
 
     /**
+     * Twig function returns sitemap.
+     *
+     * @return Response
+     */
+    protected function registerTwigFunctions(){
+        return [
+            'sitemapEntries' => 'twigGetLinks'
+        ];
+    }
+
+    /**
      * Route for XML based sitemap.
      *
      * @return Response
@@ -93,8 +104,13 @@ class SitemapExtension extends SimpleExtension
         return [
             'ignore'             => [],
             'ignore_contenttype' => [],
+            'remove_link' => [],
             'ignore_listing'     => false,
         ];
+    }
+
+    public function twigGetLinks(){
+        return $this->getLinks();
     }
 
     /**
@@ -120,19 +136,29 @@ class SitemapExtension extends SimpleExtension
                 'title' => $app['config']->get('general/sitename'),
             ],
         ];
+
         foreach ($contentTypes as $contentType) {
             $searchable = (isset($contentType['searchable']) && $contentType['searchable']) || !isset($contentType['searchable']);
             $isIgnored = in_array($contentType['slug'], $config['ignore_contenttype']);
+            $isIgnoredURL = in_array('/' . $contentType['slug'], $config['remove_link']);
 
             if (!$isIgnored && !$contentType['viewless'] && $searchable) {
                 $baseDepth = 0;
                 if (!$config['ignore_listing']) {
                     $baseDepth = 1;
-                    $links[] = [
-                        'link'  => $rootPath . $contentType['slug'],
-                        'title' => $contentType['name'],
-                        'depth' => 1,
-                    ];
+                    if ($isIgnoredURL){
+                        $links[] = [
+                            'link'  => '',
+                            'title' => $contentType['name'],
+                            'depth' => 1,
+                        ];
+                    }else{
+                        $links[] = [
+                            'link'  => $rootPath . $contentType['slug'],
+                            'title' => $contentType['name'],
+                            'depth' => 1,
+                        ];
+                    }
                 }
                 $content = $app['storage']->getContent($contentType['slug'], $contentParams);
                 /** @var Content $entry */

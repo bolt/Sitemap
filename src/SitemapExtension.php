@@ -104,7 +104,7 @@ class SitemapExtension extends SimpleExtension
         return [
             'ignore'             => [],
             'ignore_contenttype' => [],
-            'remove_link' => [],
+            'remove_link'        => [],
             'ignore_listing'     => false,
         ];
     }

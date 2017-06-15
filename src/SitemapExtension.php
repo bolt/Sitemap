@@ -8,6 +8,7 @@ use Bolt\Controller\Zone;
 use Bolt\Extension\SimpleExtension;
 use Bolt\Legacy\Content;
 use Carbon\Carbon;
+use Silex\Application;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,43 +22,36 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class SitemapExtension extends SimpleExtension
 {
     /**
-     * Route for regular sitemap.
-     *
-     * @return Response
+     * {@inheritdoc}
      */
-    public function sitemap($xml = false)
+    protected function registerServices(Application $app)
     {
-        $config = $this->getConfig();
-        $body = $this->renderTemplate($config['template'], ['entries' => $this->getLinks()]);
-
-        return new Response($body, Response::HTTP_OK);
+        $app['sitemap.config'] = $app->share(
+            function () {
+                return $this->getConfig();
+            }
+        );
+        $app['sitemap.links'] = $app->share(
+            function ($app) {
+                return $this->getLinks();
+            }
+        );
+        $app['sitemap.controller'] = $app->share(
+            function ($app) {
+                return new Controller\Sitemap();
+            }
+        );
     }
 
     /**
      * Twig function returns sitemap.
      *
-     * @return Response
+     * @return array
      */
     protected function registerTwigFunctions(){
         return [
             'sitemapEntries' => 'twigGetLinks'
         ];
-    }
-
-    /**
-     * Route for XML based sitemap.
-     *
-     * @return Response
-     */
-    public function sitemapXml()
-    {
-        $config = $this->getConfig();
-        $body = $this->renderTemplate($config['xml_template'], ['entries' => $this->getLinks()]);
-
-        $response = new Response($body, Response::HTTP_OK);
-        $response->headers->set('Content-Type', 'application/xml; charset=utf-8');
-
-        return $response;
     }
 
     /**
@@ -72,7 +66,7 @@ class SitemapExtension extends SimpleExtension
             ->setCallback(function () {
                 $app = $this->getContainer();
                 $snippet = sprintf(
-                    '<link rel="sitemap" type="application/xml" title="Sitemap" href="%ssitemap.xml">',
+                    '<link rel="sitemap" type="application/xml" title="Sitemap" href="%s/sitemap.xml">',
                     $app['url_generator']->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)
                 );
 
@@ -83,17 +77,6 @@ class SitemapExtension extends SimpleExtension
         return [
             $snippet,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Set up the routes for the sitemap.
-     */
-    protected function registerFrontendRoutes(ControllerCollection $collection)
-    {
-        $collection->match('sitemap', [$this, 'sitemap']);
-        $collection->match('sitemap.xml', [$this, 'sitemapXml']);
     }
 
     /**
@@ -111,6 +94,30 @@ class SitemapExtension extends SimpleExtension
 
     public function twigGetLinks(){
         return $this->getLinks();
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+
+    protected function registerTwigPaths()
+    {
+        return [
+            'templates',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function registerFrontendControllers()
+    {
+        $app = $this->getContainer();
+
+        return [
+            '/' => $app['sitemap.controller'],
+        ];
     }
 
     /**
@@ -154,7 +161,7 @@ class SitemapExtension extends SimpleExtension
                         ];
                     }else{
                         $links[] = [
-                            'link'  => $rootPath . $contentType['slug'],
+                            'link'  => $rootPath . '/' . $contentType['slug'],
                             'title' => $contentType['name'],
                             'depth' => 1,
                         ];

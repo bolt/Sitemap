@@ -19,20 +19,22 @@ Apart from that, it's good pratice to also add the following line to your
 Obviously, you should replace 'example.org' with the domain name of your website.
 
 This extension adds a 'route' for `/sitemap.xml` and `/sitemap` by default, but it 
-has lower priority than user defined routes. 
-If you use the `pagebinding` in `routing.yml` (or anything similar like `/{slug}` ),
+has lower priority than user defined routes.
+
+If you want AnimalDesign/bolt-translate extension compatibily or 
+if you use the `pagebinding` in `routing.yml` (or anything similar like `/{slug}` ),
 you need to add the following _above_ that route:
 
 ```
-sitemapxml:
-  path: /sitemap.xml
-  defaults: { _controller: 'Bolt\Extension\Bolt\Sitemap\Extension::sitemapXml' }
-
-
 sitemap:
   path: /sitemap
-  defaults: { _controller: 'Bolt\Extension\Bolt\Sitemap\Extension::sitemap' }
+  defaults: { _controller: sitemap.controller:sitemap }
+
+sitemapXml:
+  path: /sitemap.xml
+  defaults: { _controller: sitemap.controller:sitemapXml }
 ```
+
 
 Note, if you have a ContentType with the property `searchable: false`, that content 
 type will be ignored.

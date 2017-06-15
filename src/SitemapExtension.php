@@ -154,7 +154,7 @@ class SitemapExtension extends SimpleExtension
                         ];
                     }else{
                         $links[] = [
-                            'link'  => $rootPath . $contentType['slug'],
+                            'link'  => $rootPath . '/' . $contentType['slug'],
                             'title' => $contentType['name'],
                             'depth' => 1,
                         ];

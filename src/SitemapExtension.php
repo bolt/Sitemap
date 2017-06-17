@@ -66,8 +66,8 @@ class SitemapExtension extends SimpleExtension
             ->setCallback(function () {
                 $app = $this->getContainer();
                 $snippet = sprintf(
-                    '<link rel="sitemap" type="application/xml" title="Sitemap" href="%s/sitemap.xml">',
-                    $app['url_generator']->generate('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)
+                    '<link rel="sitemap" type="application/xml" title="Sitemap" href="%s">',
+                    $app['url_generator']->generate('sitemapXml', [], UrlGeneratorInterface::ABSOLUTE_URL)
                 );
 
                 return $snippet;

@@ -30,9 +30,11 @@ class Sitemap implements ControllerProviderInterface
 
         // This matches both GET requests.
         $ctr->match('sitemap', [$this, 'sitemap'])
+            ->bind('sitemap')
             ->method('GET');
 
         $ctr->match('sitemap.xml', [$this, 'sitemapXml'])
+            ->bind('sitemapXml')
             ->method('GET');
 
         return $ctr;

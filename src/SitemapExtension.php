@@ -135,11 +135,10 @@ class SitemapExtension extends SimpleExtension
         $config = $this->getConfig();
         $contentTypes = $app['config']->get('contenttypes');
         $contentParams = ['limit' => 10000, 'order' => 'datepublish desc', 'hydrate' => false];
-        $rootPath = $app['url_generator']->generate('homepage');
 
         $links = [
             [
-                'link'  => $rootPath,
+                'link'  => $app['url_generator']->generate('homepage'),
                 'title' => $app['config']->get('general/sitename'),
             ],
         ];
@@ -160,8 +159,9 @@ class SitemapExtension extends SimpleExtension
                             'depth' => 1,
                         ];
                     }else{
+                        $link = $app['url_generator']->generate('contentlisting', ['contenttypeslug' => $contentType['slug']]);
                         $links[] = [
-                            'link'  => $rootPath . '/' . $contentType['slug'],
+                            'link'  => $link,
                             'title' => $contentType['name'],
                             'depth' => 1,
                         ];

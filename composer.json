@@ -7,7 +7,7 @@
         "SEO"
     ],
     "require": {
-        "bolt/bolt": "^3.0"
+        "bolt/bolt": "^4.0"
     },
     "license": "MIT",
     "authors": [
@@ -33,7 +33,7 @@
         "bolt-icon": "icon-sitemap.png",
         "bolt-class": "Bolt\\Extension\\Bolt\\Sitemap\\SitemapExtension",
         "branch-alias": {
-            "dev-2.x": "2.3.x-dev"
+            "dev-master": "4.0.x-dev"
         }
     }
 }

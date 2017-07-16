@@ -4,9 +4,9 @@
         {% if entry.link is defined %}
             {% if entry.link is not empty %}
                 <url>
-                    <loc>{{ app.paths.hosturl }}{{ entry.link }}</loc>
+                    <loc>{{ url('homepage')|trim('/', 'right') }}{{ entry.link }}</loc>
                     {% if entry.link == "/" %}
-                        {% setcontent record = app.config.get('general/homepage') returnsingle %}
+                        {% setcontent record = config.get('general/homepage') returnsingle %}
                     {% elseif entry.record is defined %}
                         {% set record = entry.record %}
                     {% endif %}
@@ -22,7 +22,7 @@
                     {% for key,value in record.values|default %}
                         {% if record.fieldtype(key) == "image" and value != "" %}
                             <image:image>
-                                <image:loc>{{ app.paths.hosturl }}{{ value|image(app.config.get('general/thumbnails/default_image')|first, app.config.get('general/thumbnails/default_image')|last) }}</image:loc>
+                                <image:loc>{{ url('homepage')|trim('/', 'right') }}{{ value|image(config.get('general/thumbnails/default_image')|first, config.get('general/thumbnails/default_image')|last) }}</image:loc>
                                 {% if value.alt|default() %}
                                     <image:title><![CDATA[{{ value.alt }}]]></image:title>
                                 {% endif %}
@@ -34,7 +34,7 @@
                             {% set list = attribute(record, key) %}
                             {% for item in list %}
                                 <image:image>
-                                    <image:loc>{{ app.paths.hosturl }}{{ item.filename|image(app.config.get('general/thumbnails/default_image')|first, app.config.get('general/thumbnails/default_image')|last) }}</image:loc>
+                                    <image:loc>{{ url('homepage')|trim('/', 'right') }}{{ item.filename|image(config.get('general/thumbnails/default_image')|first, config.get('general/thumbnails/default_image')|last) }}</image:loc>
                                     {% if item.title %}
                                         {% if item.alt|default() %}
                                             <image:title><![CDATA[{{ item.alt }}]]></image:title>

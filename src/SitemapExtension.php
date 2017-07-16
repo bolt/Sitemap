@@ -8,7 +8,7 @@ use Bolt\Controller\Zone;
 use Bolt\Extension\SimpleExtension;
 use Bolt\Legacy\Content;
 use Carbon\Carbon;
-use Silex\Application;
+use Pimple\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -22,23 +22,17 @@ class SitemapExtension extends SimpleExtension
     /**
      * {@inheritdoc}
      */
-    protected function registerServices(Application $app)
+    protected function registerServices(Container $app)
     {
-        $app['sitemap.config'] = $app->share(
-            function () {
-                return $this->getConfig();
-            }
-        );
-        $app['sitemap.links'] = $app->share(
-            function () {
-                return $this->getLinks();
-            }
-        );
-        $app['sitemap.controller'] = $app->share(
-            function () {
-                return new Controller\Sitemap();
-            }
-        );
+        $app['sitemap.config'] = function () {
+            return $this->getConfig();
+        };
+        $app['sitemap.links'] = function () {
+            return $this->getLinks();
+        };
+        $app['sitemap.controller'] = function () {
+            return new Controller\Sitemap();
+        };
     }
 
     /**

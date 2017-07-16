@@ -2,9 +2,9 @@
 
 namespace Bolt\Extension\Bolt\Sitemap\Controller;
 
+use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
-use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

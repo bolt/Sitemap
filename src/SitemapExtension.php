@@ -9,8 +9,6 @@ use Bolt\Extension\SimpleExtension;
 use Bolt\Legacy\Content;
 use Carbon\Carbon;
 use Silex\Application;
-use Silex\ControllerCollection;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -32,12 +30,12 @@ class SitemapExtension extends SimpleExtension
             }
         );
         $app['sitemap.links'] = $app->share(
-            function ($app) {
+            function () {
                 return $this->getLinks();
             }
         );
         $app['sitemap.controller'] = $app->share(
-            function ($app) {
+            function () {
                 return new Controller\Sitemap();
             }
         );
@@ -48,9 +46,10 @@ class SitemapExtension extends SimpleExtension
      *
      * @return array
      */
-    protected function registerTwigFunctions(){
+    protected function registerTwigFunctions()
+    {
         return [
-            'sitemapEntries' => 'twigGetLinks'
+            'sitemapEntries' => 'twigGetLinks',
         ];
     }
 
@@ -92,10 +91,10 @@ class SitemapExtension extends SimpleExtension
         ];
     }
 
-    public function twigGetLinks(){
+    public function twigGetLinks()
+    {
         return $this->getLinks();
     }
-
 
     /**
      * {@inheritdoc}
@@ -152,13 +151,13 @@ class SitemapExtension extends SimpleExtension
                 $baseDepth = 0;
                 if (!$config['ignore_listing']) {
                     $baseDepth = 1;
-                    if ($isIgnoredURL){
+                    if ($isIgnoredURL) {
                         $links[] = [
                             'link'  => '',
                             'title' => $contentType['name'],
                             'depth' => 1,
                         ];
-                    }else{
+                    } else {
                         $link = $app['url_generator']->generate('contentlisting', ['contenttypeslug' => $contentType['slug']]);
                         $links[] = [
                             'link'  => $link,

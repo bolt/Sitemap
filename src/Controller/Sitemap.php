@@ -5,12 +5,10 @@ namespace Bolt\Extension\Bolt\Sitemap\Controller;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * The controller for Sitemap routes.
- *
  */
 
 class Sitemap implements ControllerProviderInterface
@@ -42,30 +40,30 @@ class Sitemap implements ControllerProviderInterface
 
     /**
      * @param Application $app
-     * @param Request $request
      *
      * @return Response
      */
-    public function sitemap(Application $app, Request $request)
+    public function sitemap(Application $app)
     {
         $config = $app['sitemap.config'];
-
-        $body = $app["twig"]->render($config['template'], ['entries' => $app['sitemap.links']]);
+        $twig = $app['twig'];
+        $context = ['entries' => $app['sitemap.links']];
+        $body = $twig->render($config['template'], $context);
 
         return new Response($body, Response::HTTP_OK);
     }
 
     /**
      * @param Application $app
-     * @param Request $request
      *
      * @return Response
      */
-    public function sitemapXml(Application $app, Request $request)
+    public function sitemapXml(Application $app)
     {
+        $twig = $app['twig'];
         $config = $app['sitemap.config'];
-
-        $body = $app["twig"]->render($config['xml_template'], ['entries' => $app['sitemap.links']]);
+        $context = ['entries' => $app['sitemap.links']];
+        $body = $twig->render($config['xml_template'], $context);
 
         $response = new Response($body, Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/xml; charset=utf-8');

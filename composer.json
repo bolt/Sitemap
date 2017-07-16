@@ -31,6 +31,9 @@
     },
     "extra": {
         "bolt-icon": "icon-sitemap.png",
-        "bolt-class": "Bolt\\Extension\\Bolt\\Sitemap\\SitemapExtension"
+        "bolt-class": "Bolt\\Extension\\Bolt\\Sitemap\\SitemapExtension",
+        "branch-alias": {
+            "dev-2.x": "2.3.x-dev"
+        }
     }
 }

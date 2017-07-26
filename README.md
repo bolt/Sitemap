@@ -11,7 +11,7 @@ the link to the `<head>` section of your pages:
 
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 
-Apart from that, it's good pratice to also add the following line to your
+Apart from that, it's good practice to also add the following line to your
 `robots.txt` file:
 
     Sitemap: http://example.org/sitemap.xml

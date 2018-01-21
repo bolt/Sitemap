@@ -16,6 +16,9 @@ ignore:
 ## ignore listing templates
 #ignore_listing: true
 
+## ignore images (by default the sitemap contains links to images)
+ignore_images: false
+
 ## when ignore_listing is not = true: listings templates may not exist yet may contain child pages.
 ## add path will keep listing visible in tree but remove its link.
 #remove_link:

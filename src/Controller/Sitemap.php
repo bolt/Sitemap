@@ -47,7 +47,11 @@ class Sitemap implements ControllerProviderInterface
     {
         $config = $app['sitemap.config'];
         $twig = $app['twig'];
-        $context = ['entries' => $app['sitemap.links']];
+        $context = [
+            'entries' => $app['sitemap.links'],
+            'ignore_images'  => $config['ignore_images'],
+        ];
+
         $body = $twig->render($config['template'], $context);
 
         return new Response($body, Response::HTTP_OK);
@@ -62,7 +66,11 @@ class Sitemap implements ControllerProviderInterface
     {
         $twig = $app['twig'];
         $config = $app['sitemap.config'];
-        $context = ['entries' => $app['sitemap.links']];
+        $context = [
+            'entries' => $app['sitemap.links'],
+            'ignore_images'  => $config['ignore_images'],
+        ];
+
         $body = $twig->render($config['xml_template'], $context);
 
         $response = new Response($body, Response::HTTP_OK);

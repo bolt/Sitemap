@@ -88,6 +88,7 @@ class SitemapExtension extends SimpleExtension
             'ignore_contenttype' => [],
             'remove_link'        => [],
             'ignore_listing'     => false,
+            'ignore_images'      => false,
         ];
     }
 

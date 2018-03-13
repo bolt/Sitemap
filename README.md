@@ -43,3 +43,14 @@ sitemapXml:
 
 Note, if you have a ContentType with the property `searchable: false`, that
 content type will be ignored.
+
+## Sitemap stylesheets
+
+You can customize the sitemap with an xslt stylesheet if you copy the `templates/sitemap_xml.twig`
+file and the `web/sitemap.xsl` file to your theme directory and by adding the xsl-stylesheet declaration
+after the xml declaration so the first two lines of the `themes/{yourthemename}/sitemap_xml.twig` look like:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="{{ paths.theme }}/sitemap.xsl"?>
+```

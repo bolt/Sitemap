@@ -13,6 +13,10 @@ ignore:
 #ignore_contenttype:
 #  - pages
 
+## listing routes (contenttype_slug: route_name)
+#listing_routes:
+#  pages: custom_pages_route
+
 ## ignore listing templates
 #ignore_listing: true
 

@@ -194,6 +194,7 @@ class SitemapExtension extends SimpleExtension
 
     /**
      * @param string $contentTypeSlug
+     *
      * @return string
      */
     private function getListingLink($contentTypeSlug)
@@ -243,6 +244,7 @@ class SitemapExtension extends SimpleExtension
 
     /**
      * @param MutableBag $links
+     *
      * @return MutableBag
      */
     private function transformByListeners($links)

@@ -44,6 +44,31 @@ sitemapXml:
 Note, if you have a ContentType with the property `searchable: false`, that
 content type will be ignored.
 
+## Advanced links list control
+
+If you have your own bundled extension you can add, remove or change links
+before the sitemap is rendered. You need to subscribe to the 
+`SitemapEvents::AFTER_COLLECTING_LINKS` event. The object you will get is
+an instance of `SitemapEvent` class which has a `getLinks` method that returns 
+a `MutableBag` object. The last one is an array-like list of links. See example:
+
+```php
+protected function subscribe($dispatcher)
+{
+    $dispatcher->addListener(SitemapEvents::AFTER_COLLECTING_LINKS,
+        function ($event) {
+            /** @var SitemapEvent $event */
+            $links = $event->getLinks();
+            $links->add([
+                'link'  => '/lorem-ipsum',
+                'title' => 'Hello World!',
+                'depth' => 1,
+            ]);
+        }
+    );
+}
+```
+
 ## Sitemap stylesheets
 
 You can customize the sitemap with an xslt stylesheet if you copy the `templates/sitemap_xml.twig`

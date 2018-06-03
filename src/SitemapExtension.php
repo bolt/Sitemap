@@ -4,6 +4,7 @@ namespace Bolt\Extension\Bolt\Sitemap;
 
 use Bolt\Asset\Snippet\Snippet;
 use Bolt\Asset\Target;
+use Bolt\Collection\MutableBag;
 use Bolt\Controller\Zone;
 use Bolt\Extension\SimpleExtension;
 use Bolt\Legacy\Content;
@@ -123,7 +124,7 @@ class SitemapExtension extends SimpleExtension
     /**
      * Get an array of links.
      *
-     * @return array
+     * @return MutableBag
      */
     private function getLinks()
     {
@@ -136,12 +137,13 @@ class SitemapExtension extends SimpleExtension
         $contentTypes = $app['config']->get('contenttypes');
         $contentParams = ['limit' => 10000, 'order' => 'datepublish desc', 'hydrate' => false];
 
-        $links = [
-            [
-                'link'  => $app['url_generator']->generate('homepage'),
-                'title' => $app['config']->get('general/sitename'),
-            ],
+        $homepageLink = [
+            'link'  => $app['url_generator']->generate('homepage'),
+            'title' => $app['config']->get('general/sitename'),
         ];
+
+        $links = new MutableBag();
+        $links->add($homepageLink);
 
         foreach ($contentTypes as $contentType) {
             $searchable = (isset($contentType['searchable']) && $contentType['searchable']) || !isset($contentType['searchable']);
@@ -153,30 +155,30 @@ class SitemapExtension extends SimpleExtension
                 if (!$config['ignore_listing']) {
                     $baseDepth = 1;
                     if ($isIgnoredURL) {
-                        $links[] = [
+                        $links->add([
                             'link'  => '',
                             'title' => $contentType['name'],
                             'depth' => 1,
-                        ];
+                        ]);
                     } else {
                         $link = $this->getListingLink($contentType['slug']);
-                        $links[] = [
+                        $links->add([
                             'link'  => $link,
                             'title' => $contentType['name'],
                             'depth' => 1,
-                        ];
+                        ]);
                     }
                 }
                 $content = $app['storage']->getContent($contentType['slug'], $contentParams);
                 /** @var Content $entry */
                 foreach ($content as $entry) {
-                    $links[] = [
+                    $links->add([
                         'link'    => $entry->link(),
                         'title'   => $entry->getTitle(),
                         'depth'   => $baseDepth + 1,
                         'lastmod' => Carbon::createFromTimestamp(strtotime($entry->get('datechanged')))->toW3cString(),
                         'record'  => $entry,
-                    ];
+                    ]);
                 }
             }
         }
@@ -187,7 +189,7 @@ class SitemapExtension extends SimpleExtension
             }
         }
 
-        return $links;
+        return $this->transformByListeners($links);
     }
 
     /**
@@ -237,5 +239,17 @@ class SitemapExtension extends SimpleExtension
 
         // No absolute match & no regex match
         return false;
+    }
+
+    /**
+     * @param MutableBag $links
+     * @return MutableBag
+     */
+    private function transformByListeners($links)
+    {
+        $event = new SitemapEvent($links);
+        $this->getContainer()['dispatcher']->dispatch(SitemapEvents::AFTER_COLLECTING_LINKS, $event);
+
+        return $event->getLinks();
     }
 }

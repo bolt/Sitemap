@@ -159,7 +159,7 @@ class SitemapExtension extends SimpleExtension
                             'depth' => 1,
                         ];
                     } else {
-                        $link = $app['url_generator']->generate('contentlisting', ['contenttypeslug' => $contentType['slug']]);
+                        $link = $this->getListingLink($contentType['slug']);
                         $links[] = [
                             'link'  => $link,
                             'title' => $contentType['name'],
@@ -188,6 +188,25 @@ class SitemapExtension extends SimpleExtension
         }
 
         return $links;
+    }
+
+    /**
+     * @param string $contentTypeSlug
+     * @return string
+     */
+    private function getListingLink($contentTypeSlug)
+    {
+        $config = $this->getConfig();
+        $urlGenerator = $this->getContainer()['url_generator'];
+        $urlParameters = ['contenttypeslug' => $contentTypeSlug];
+
+        if(isset($config['listing_routes']) && isset($config['listing_routes'][$contentTypeSlug])) {
+            $routeName = $config['listing_routes'][$contentTypeSlug];
+
+            return $urlGenerator->generate($routeName, $urlParameters);
+        }
+
+        return $urlGenerator->generate('contentlisting', $urlParameters);
     }
 
     /**

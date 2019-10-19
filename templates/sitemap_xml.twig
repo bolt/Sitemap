@@ -4,7 +4,7 @@
         {% if entry.link is defined %}
             {% if entry.link is not empty %}
                 <url>
-                    <loc>{{ url('homepage')|trim('/', 'right') }}{{ entry.link }}</loc>
+                    <loc>{{ absolute_url(entry.link) }}</loc>
                     {% if entry.link == "/" %}
                         {% setcontent record = config.get('general/homepage') returnsingle %}
                     {% elseif entry.record is defined %}

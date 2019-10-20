@@ -129,8 +129,8 @@ class SitemapExtension extends SimpleExtension
     private function getLinks()
     {
         // If we have a boatload of content, we might need a bit more memory.
-        set_time_limit(0);
-        ini_set('memory_limit', '512M');
+        @set_time_limit(0);
+        @ini_set('memory_limit', '512M');
 
         $app = $this->getContainer();
         $config = $this->getConfig();

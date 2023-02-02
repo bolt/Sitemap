@@ -20,7 +20,7 @@
                         <priority>0.8</priority>
                     {% endif %}
                     {% for key,value in record.values|default if not ignore_images %}
-                        {% if record.fieldtype(key) == "image" and value != "" %}
+                        {% if record.fieldtype(key) == "image" and value != "" and value != false %}
                             <image:image>
                                 <image:loc>{{ absolute_url(value|image(config.get('general/thumbnails/default_image')|first, config.get('general/thumbnails/default_image')|last)) }}</image:loc>
                                 {% if value.alt|default() %}
